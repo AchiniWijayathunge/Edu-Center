@@ -1,37 +1,69 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Divider, Table } from 'antd';
+import { Link } from 'react-router-dom';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Classes_a from './Addings';
+import { Button } from "react-bootstrap";
 
-const Classes_a = () => {
-  const [classes, setClasses] = useState(null);
+
+
+const Teachers = () => {
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "title",
+
+    },
+    
+    {
+      title: "Teacher_id",
+      dataIndex: "teacher_id",
+    },
+    {
+        title: "subject",
+        dataIndex: "subject",
+      },
+      {
+        title: "classes",
+        
+      }
+
+     
+      
+  ];
+ 
+  
+ 
+  const [teachers, setTeachers] = useState(null);
   useEffect(() => {
-    const fetchClassses = async () => {
+    const fetchTeachers = async () => {
       const response = await fetch("/api/teachers");
       const json = await response.json();
-
       if (response.ok) {
-        setClasses(json);
+        setTeachers(json);
       }
     };
-
-    fetchClassses();
+    fetchTeachers();
   }, []);
+  
+
   return (
-    <div className="class">
-      <div className="classes">
-        {classes &&
-          classes.map((classes) => (
-            <p key={classes._id}>
-              {classes.title}= {classes.subject}
-              <Link to="/classes">
-                <button>Classes</button>
-              </Link>
-            </p>
-          ))}
-      </div>
-      <Link to="/Addings">
+    
+        <>
+    <Divider>Teachers</Divider>
+    <Table columns={columns} dataSource={teachers}
+    size="middle " />
+
+   <Link to="/Addings">
         <button>Add Teachers</button>
       </Link>
-    </div>
+    
+    
+  </>
+    
+
   );
 };
-export default Classes_a;
+
+export default Teachers;
