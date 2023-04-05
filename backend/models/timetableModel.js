@@ -11,8 +11,8 @@ const timetableSchema = new Schema({
         type: String,
         required:true,
     },
-    teacher_id:{
-        type: Number,
+    email:{
+        type: String,
         required:true,
     },
     subject:{

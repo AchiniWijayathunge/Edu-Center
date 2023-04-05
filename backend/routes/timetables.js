@@ -2,6 +2,7 @@ const express = require('express')
 const {
     createTimetable,
     getTimetable,
+    getTimetables,
     deleteTimetable,
     updateTimetable
 
@@ -12,6 +13,7 @@ const router = express.Router()
 //Get all teachers
 router.get('/', getTimetable)
 
+router.get('/:id', getTimetables)
 //Add a new teacher
 router.post('/', createTimetable)
 // Delete a teacher

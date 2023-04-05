@@ -7,9 +7,14 @@ const {
     deleteTeacher
 
 } = require ('../controllers/teacherController')
-const Teacher =require('../models/teacherModel')
 
+// const requireAuth = require('../middleware/requireAuth')
+// require auth for all teachers routes
 const router = express.Router()
+
+// router.use(requireAuth)
+
+
 //Get all teachers
 router.get('/', getTeachers)
 //Get a one teacher

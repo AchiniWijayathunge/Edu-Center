@@ -6,13 +6,26 @@ const getTimetable = async (req, res) => {
     const timetables = await Timetable.find({}).sort({ createdAt: -1 });
     res.status(200).json(timetables);
   };
+  //get a single teacher
+const getTimetables = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "No such Teacher" });
+  }
+  const timetables = await Timetable.findById(id);
+
+  if (!timetables) {
+    return res.status(404).json({ error: "No such teacher" });
+  }
+  res.status(200).json(timetables);
+};
 
 //add a new Class
 const createTimetable = async (req, res) => {
-  const {title, day, teacher_id,subject,time } = req.body;
+  const {title, day, email ,subject,time } = req.body;
   // add docto db
   try {
-    const timetables = await Timetable.create({title, day, teacher_id,subject,time });
+    const timetables = await Timetable.create({title, day, email,subject,time });
     res.status(200).json(timetables);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -25,12 +38,12 @@ const deleteTimetable = async (req,res) => {
     if (!mongoose.Types.ObjectId.isValid(id)){
         return res.status(404).json({error: 'No such Class'})
       }
-      const timetable = await Timetable.findOneAndDelete({_id: id})
+      const timetables = await Timetable.findOneAndDelete({_id: id})
 
-      if (!timetable) {
+      if (!timetables) {
         return res.status(404).json({ error: "No such class" });
       }
-      res.status(200).json(timetable)
+      res.status(200).json(timetables)
 }
 
 //update a teacher
@@ -51,6 +64,7 @@ res.status(200).json(timetables)
 }
 module.exports = {
   getTimetable,
+  getTimetables,
   createTimetable,
   deleteTimetable,
   updateTimetable

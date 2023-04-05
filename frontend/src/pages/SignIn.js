@@ -1,51 +1,48 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-const SignIn = ({ setUser }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+import { useState } from "react";
+import { useSignIn } from "../hooks/useSignIn";
+import { Link, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-  const navigate = useNavigate();
-
+const SignIn = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { Login, error, isLoading } = useSignIn();
+  let navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !email) return;
-    setUser({ name: name, email: email });
-    navigate('/dashboard');
+    await Login(email, password,navigate);
   };
-
   return (
     <section className="section">
       <form className="form" onSubmit={handleSubmit}>
-        <h5>Sign In</h5>
-        <div className="form-row">
-          <label htmlFor="name" className="form-label">
-            name
-          </label>
-          <input
-            type="text"
-            className="form-input"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="form-row">
-          <label htmlFor="email" className="form-label">
-            email
-          </label>
-          <input
-            type="email"
-            className="form-input"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <button type="submit" className="btn btn-block">
-          SignIn
+        <h3>Sign In</h3>
+        <div className="form-row"></div>
+        <label htmlFor="name" className="form-label">
+          Email
+        </label>
+        <input
+          type="email"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+        />
+        <div className="form-row"></div>
+        <label htmlFor="name" className="form-label">
+          Password
+        </label>
+        <input
+          type="password"
+          className="form-input"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+        />
+        <div className="form-row"></div>
+        <button disabled={isLoading} className="btn btn-block">
+          Sign In
+          {error && <div className="error">{error}</div>}
         </button>
       </form>
     </section>
   );
 };
+
 export default SignIn;

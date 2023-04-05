@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "loginradius-react": "^0.2.0",
+    "prompt": "^1.3.0",
+    "react-router-dom": "^6.8.1",
+    "react-router-prompt": "^0.5.2"
+  }
+}

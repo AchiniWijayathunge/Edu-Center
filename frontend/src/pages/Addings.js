@@ -1,45 +1,71 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import axios from "axios";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
+import SignIn from "./SignIn";
+
 const Addteachers = ({ setUser }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const[subject, setSubject] =  useState('');
+  const [title, settitle] = useState("");
+  const [teacher_id, setteacher_id] = useState("");
+  const [subject, setSubject] = useState("");
 
   const navigate = useNavigate();
-
+  const {user} = useAuthContext()
   const handleSubmit = async (e) => {
+   
     e.preventDefault();
-    if (!name || !email) return;
-    setUser({ name: name, email: email });
-    navigate('/dashboard');
+    axios
+      .post("http://localhost:4000/api/teachers/", {
+        title: title,
+        teacher_id: teacher_id,
+        subject: subject,
+        
+      })
+      .then(
+        (response) => {
+          console.log(response.status);
+          if (response.status == 200) {
+            window.alert("User added sucessfully");
+            navigate("../SignIn", { replace: true });
+          }
+        },
+        (error) => {
+          window.alert(error.response.data.error);
+        }
+      );
+    console.log(title);
+    console.log(teacher_id);
+    console.log(subject);
   };
 
   return (
     <section className="section">
+     {user && (
       <form className="form" onSubmit={handleSubmit}>
         <h5>Add Teachers</h5>
         <div className="form-row">
-          <label htmlFor="name" className="form-label">
-            Teacher's Name  
+          <label htmlFor="title" className="form-label">
+            Teacher's Name
           </label>
           <input
             type="text"
             className="form-input"
             id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={title}
+            onChange={(e) => settitle(e.target.value)}
           />
         </div>
         <div className="form-row">
-          <label htmlFor="email" className="form-label">
-           email 
+          <label htmlFor="teacher_id" className="form-label">
+          
+          Teacher_id
           </label>
           <input
-            type="email"
+            type="text"
             className="form-input"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            id="teacher_id"
+            value={teacher_id}
+            onChange={(e) => setteacher_id(e.target.value)}
           />
         </div>
         <div className="form-row">
@@ -58,8 +84,8 @@ const Addteachers = ({ setUser }) => {
           Add
         </button>
       </form>
+     )}
     </section>
   );
 };
 export default Addteachers;
-

@@ -7,8 +7,8 @@ const teacherSchema = new Schema({
         type: String,
         required:true,
     },
-    teacher_id:{
-        type: Number,
+    teacher_id: {
+        type: String,
         required:true,
     },
     subject:{
